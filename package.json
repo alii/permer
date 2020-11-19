@@ -1,0 +1,21 @@
+{
+  "name": "permer",
+  "version": "1.0.1",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "license": "MIT",
+  "description": "A basic abstraction for handling permissions using bitwise",
+  "author": "Alistair Smith <alistairsmith01@gmail.com>",
+  "scripts": {
+    "build": "tsc",
+    "prepublishOnly": "yarn build"
+  },
+  "devDependencies": {
+    "typescript": "^4.0.5"
+  },
+  "files": [
+    "dist",
+    "readme.md",
+    "package.json"
+  ]
+}
