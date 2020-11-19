@@ -9,8 +9,8 @@ export class Permer<T extends string> extends Map<T, number> {
 
       return {
         ...all,
-        [key]: representation
-      }
+        [key]: representation,
+      };
     }, {} as Record<T, number>);
   }
 
@@ -23,6 +23,6 @@ export class Permer<T extends string> extends Map<T, number> {
   }
 
   toPermissionList(value: number): T[] {
-    return [...this.keys()].filter(key => this.hasPermission(value, key));
+    return [...this.keys()].filter((key) => this.hasPermission(value, key));
   }
 }
