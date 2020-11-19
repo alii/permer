@@ -17,5 +17,6 @@
     "dist",
     "readme.md",
     "package.json"
-  ]
+  ],
+  "repository": "https://github.com/alii/permer.git"
 }
