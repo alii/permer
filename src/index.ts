@@ -21,4 +21,8 @@ export class Permer<T extends string> extends Map<T, number> {
   toPermissionsInteger(perms: T[]): number {
     return perms.reduce((all, perm) => this.get(perm) | all, 0);
   }
+
+  toPermissionList(value: number): T[] {
+    return [...this.keys()].filter(key => this.hasPermission(value, key));
+  }
 }
