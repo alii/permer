@@ -1,17 +1,27 @@
-export class Permer<T extends string> extends Map<T, number> {
-  public readonly permissions: Record<T, number>;
+export class Permer<T extends string> {
+  private readonly permissions: Record<T, number>;
 
   constructor(permissions: T[]) {
-    super();
     this.permissions = permissions.reduce((all, key, index) => {
       const representation = 2 ** index;
-      this.set(key, representation);
 
       return {
         ...all,
         [key]: representation,
       };
     }, {} as Record<T, number>);
+  }
+
+  get(perm: T): number {
+    return this.permissions[perm];
+  }
+
+  keys() {
+    return Object.keys(this.permissions) as T[];
+  }
+
+  values(): number[] {
+    return Object.values(this.permissions);
   }
 
   hasPermission(value: number, permission: T | number): boolean {
@@ -23,6 +33,6 @@ export class Permer<T extends string> extends Map<T, number> {
   }
 
   toPermissionList(value: number): T[] {
-    return [...this.keys()].filter((key) => this.hasPermission(value, key));
+    return this.keys().filter((key) => this.hasPermission(value, key));
   }
 }
