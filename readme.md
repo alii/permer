@@ -1,6 +1,6 @@
 # Permer
 
-## Very basic bitwise permissions abstraction.
+### A basic abstraction for handling flags and permissions using bitwise
 
 #### Install
 
@@ -19,11 +19,11 @@ const user = {
 };
 
 // Get individual permissions
-const isAdmin = permer.hasPermission(user.permissions, "admin");
-const isOwner = permer.hasPermission(user.permissions, "owner");
-const isStaff = permer.hasPermission(user.permissions, "staff");
-const canRead = permer.hasPermission(user.permissions, "read");
-const canWrite = permer.hasPermission(user.permissions, "write");
+const isAdmin = permer.test(user.permissions, "admin");
+const isOwner = permer.test(user.permissions, "owner");
+const isStaff = permer.test(user.permissions, "staff");
+const canRead = permer.test(user.permissions, "read");
+const canWrite = permer.test(user.permissions, "write");
 
 console.log(`${user.username}'s permissions:`, { isAdmin, isOwner, isStaff, canRead, canWrite });
 

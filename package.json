@@ -4,7 +4,7 @@
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "license": "MIT",
-  "description": "A basic abstraction for handling permissions using bitwise",
+  "description": "A basic abstraction for handling flags and permissions using bitwise",
   "author": "Alistair Smith <alistairsmith01@gmail.com>",
   "scripts": {
     "build": "tsc",

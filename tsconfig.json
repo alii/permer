@@ -5,7 +5,9 @@
     "sourceMap": false,
     "rootDir": "src",
     "outDir": "dist",
-    "declaration": true
+    "declaration": true,
+    "strict": true,
+    "experimentalDecorators": true
   },
   "exclude": [
     "node_modules"
