@@ -1,5 +1,3 @@
-import {deprecate} from "./deprecate";
-
 /**
  * The main class to instantiate Permer.
  */
@@ -44,25 +42,6 @@ export class Permer<T extends string> {
   }
 
   /**
-   * Tests the given flag against an integer. This method is deprecated, please use Permer#test
-   * @deprecated
-   * @param value
-   * @param flag
-   * @example
-   * const user = await findUser();
-   * // Note, hasPermission is deprecated. Please use Permer#test instead
-   * const canCreateBlogPost = permerInstance.hasPermission(user.permissions, "create_blog_post");
-   *
-   * if (!canCreateBlogPost) {
-   *   throw new Error("You do not have permission to create a blog post.);
-   * }
-   */
-  @deprecate("test")
-  hasPermission(value: number, flag: T | number): boolean {
-    return this.test(value, flag);
-  }
-
-  /**
    * Tests the given flag against an integer.
    * @param value
    * @param flag
@@ -76,16 +55,6 @@ export class Permer<T extends string> {
    */
   test(value: number, flag: T | number): boolean {
     return !!(value & (typeof flag === "number" ? flag : this.get(flag)));
-  }
-
-  /**
-   * Calculate an array of permissions based upon. This method is deprecated, please use Permer#calculate
-   * @deprecated
-   * @param flags - An array of flags to convert to a single integer
-   */
-  @deprecate("calculate")
-  toPermissionsInteger(flags: T[]): number {
-    return this.calculate(flags);
   }
 
   /**
@@ -107,18 +76,8 @@ export class Permer<T extends string> {
    * @param newValues - The new values to add
    */
   add(current: number, newValues: T[]): number {
-    const oldList = this.toPermissionList(current);
+    const oldList = this.list(current);
     return this.calculate([...oldList, ...newValues]);
-  }
-
-  /**
-   * Converts an integer back into a list of flags. This method is deprecated, please use Permer#list
-   * @deprecated
-   * @param value
-   */
-  @deprecate("list")
-  toPermissionList(value: number): T[] {
-    return this.list(value);
   }
 
   /**

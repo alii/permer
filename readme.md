@@ -9,13 +9,13 @@
 #### Example
 
 ```ts
-import { Permer } from 'permer';
+import { Permer } from "permer";
 
 const permer = new Permer(["read", "write", "admin", "owner", "staff"]);
 
 const user = {
-  permissions: permer.toPermissionsInteger(["read", "write", "admin"]),
-  username: 'alii',
+  permissions: permer.calculate(["read", "write", "admin"]),
+  username: "alii",
 };
 
 // Get individual permissions
@@ -25,9 +25,15 @@ const isStaff = permer.test(user.permissions, "staff");
 const canRead = permer.test(user.permissions, "read");
 const canWrite = permer.test(user.permissions, "write");
 
-console.log(`${user.username}'s permissions:`, { isAdmin, isOwner, isStaff, canRead, canWrite });
+console.log(`${user.username}'s permissions:`, {
+  isAdmin,
+  isOwner,
+  isStaff,
+  canRead,
+  canWrite,
+});
 
-// Get an array of all permissions 
-const availablePermissions = permer.toPermissionList(user.permissions);
-console.log(`${user.username}'s permission list:`, availablePermissions.join(", "));
+// Get an array of all permissions
+const availablePermissions = permer.list(user.permissions).join(", ");
+console.log(`${user.username}'s permission list:`, availablePermissions);
 ```
