@@ -81,6 +81,16 @@ export class Permer<T extends string> {
   }
 
   /**
+   * Removes flags from an integer
+   * @param current - The current integer
+   * @param removeValues - The values to remove
+   */
+  subtract(current: number, removeValues: T[]): number {
+    const oldList = this.list(current);
+    return this.calculate(oldList.filter(it => !removeValues.includes(it)));
+  }
+  
+  /**
    * Converts an integer back into a list of flags.
    * @param value
    */
