@@ -1,13 +1,12 @@
 {
-  "compilerOptions": {
-    "module": "commonjs",
-    "target": "ES2017",
-    "sourceMap": false,
-    "rootDir": "src",
-    "outDir": "dist",
-    "declaration": true,
-    "strict": true,
-    "experimentalDecorators": true
-  },
-  "exclude": ["node_modules", "dist"]
+	"compilerOptions": {
+		"module": "commonjs",
+		"target": "ES2017",
+		"sourceMap": false,
+		"outDir": "dist",
+		"declaration": true,
+		"strict": true,
+		"experimentalDecorators": true
+	},
+	"exclude": ["node_modules", "dist"]
 }
