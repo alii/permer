@@ -1,6 +1,6 @@
 {
 	"name": "permer",
-	"version": "1.0.8",
+	"version": "1.0.9",
 	"main": "dist/index.js",
 	"types": "dist/index.d.ts",
 	"module": "dist/index.mjs",
@@ -41,6 +41,11 @@
 		"readme.md",
 		"package.json"
 	],
+	"bugs": {
+		"url": "https://github.com/alii/permer/issues",
+		"email": "hi@alistair.sh"
+	},
 	"repository": "https://github.com/alii/permer.git",
+	"homepage": "https://github.com/alii/permer#readme",
 	"packageManager": "yarn@3.2.0"
 }
