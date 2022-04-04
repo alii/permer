@@ -8,7 +8,7 @@
 	"description": "A basic abstraction for handling flags and permissions using bitwise",
 	"author": "Alistair Smith <alistairsmith01@gmail.com>",
 	"scripts": {
-		"bundle": "tsup src/index.ts --dts --format cjs,esm --target es6 --minify-whitespace",
+		"bundle": "tsup src/index.ts --dts --format cjs,esm --minify-whitespace",
 		"test": "uvu -r sucrase/register",
 		"release": "yarn bundle && yarn test && yarn npm publish"
 	},
