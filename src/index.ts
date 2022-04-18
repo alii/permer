@@ -2,7 +2,7 @@
  * The main class to instantiate Permer.
  */
 export class Permer<T extends string> {
-	private readonly map: Record<T, number>;
+	private readonly map: Record<T, bigint>;
 
 	/**
 	 * Constructs a new instance of Permer
@@ -10,20 +10,20 @@ export class Permer<T extends string> {
 	 */
 	constructor(flags: T[]) {
 		this.map = flags.reduce((all, key, index) => {
-			const representation = 2 ** index;
+			const representation = 2n ** BigInt(index);
 
 			return {
 				...all,
 				[key]: representation,
 			};
-		}, {} as Record<T, number>);
+		}, {} as Record<T, bigint>);
 	}
 
 	/**
 	 * Gets the binary representation of a given flag
 	 * @param flag
 	 */
-	get(flag: T): number {
+	get(flag: T): bigint {
 		return this.map[flag];
 	}
 
@@ -37,7 +37,7 @@ export class Permer<T extends string> {
 	/**
 	 * Gets an array of the binary representation of each flag
 	 */
-	values(): number[] {
+	values(): bigint[] {
 		return Object.values(this.map);
 	}
 
@@ -53,8 +53,8 @@ export class Permer<T extends string> {
 	 *   throw new Error("You do not have permission to create a blog post.);
 	 * }
 	 */
-	test(value: number, flag: T | number): boolean {
-		return !!(value & (typeof flag === 'number' ? flag : this.get(flag)));
+	test(value: bigint, flag: T | bigint): boolean {
+		return !!(value & (typeof flag === 'bigint' ? flag : this.get(flag)));
 	}
 
 	/**
@@ -66,8 +66,8 @@ export class Permer<T extends string> {
 	 *   permissions: permerInstance.calculate(["create_blog_post", "delete_blog_post"]);
 	 * })
 	 */
-	calculate(flags: T[]): number {
-		return flags.reduce((all, flag) => this.get(flag) | all, 0);
+	calculate(flags: T[]): bigint {
+		return flags.reduce((all, flag) => this.get(flag) | all, 0n);
 	}
 
 	/**
@@ -75,7 +75,7 @@ export class Permer<T extends string> {
 	 * @param current - The current integer
 	 * @param newValues - The new values to add
 	 */
-	add(current: number, newValues: T[]): number {
+	add(current: bigint, newValues: T[]): bigint {
 		const oldList = this.list(current);
 		return this.calculate([...oldList, ...newValues]);
 	}
@@ -85,7 +85,7 @@ export class Permer<T extends string> {
 	 * @param current - The current integer
 	 * @param removeValues - The values to remove
 	 */
-	subtract(current: number, removeValues: T[]): number {
+	subtract(current: bigint, removeValues: T[]): bigint {
 		const oldList = this.list(current);
 		return this.calculate(oldList.filter(it => !removeValues.includes(it)));
 	}
@@ -94,7 +94,7 @@ export class Permer<T extends string> {
 	 * Converts an integer back into a list of flags.
 	 * @param value
 	 */
-	list(value: number): T[] {
+	list(value: bigint): T[] {
 		return this.keys().filter(key => this.test(value, key));
 	}
 }
