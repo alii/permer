@@ -9,9 +9,9 @@ const user2 = instance.calculate(['read', 'update']);
 const user3 = instance.calculate(['update', 'delete']);
 
 test('Calculations', () => {
-	assert.is(user1, 3);
-	assert.is(user2, 6);
-	assert.is(user3, 12);
+	assert.is(user1, 3n);
+	assert.is(user2, 6n);
+	assert.is(user3, 12n);
 });
 
 test('Additions', () => {
