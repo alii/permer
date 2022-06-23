@@ -2,42 +2,87 @@ import {test} from 'uvu';
 import {Permer} from '../src';
 import * as assert from 'uvu/assert';
 
-const instance = new Permer(['create', 'read', 'update', 'delete']);
+const instanceBigInt = new Permer(['create', 'read', 'update', 'delete'], true);
 
-const user1 = instance.calculate(['create', 'read']);
-const user2 = instance.calculate(['read', 'update']);
-const user3 = instance.calculate(['update', 'delete']);
+const instanceNumber = new Permer(
+	['create', 'read', 'update', 'delete'],
+	false,
+);
+
+const [user1BigInt, user1Number] = [
+	instanceBigInt.calculate(['create', 'read']),
+	instanceNumber.calculate(['create', 'read']),
+];
+
+const [user2BigInt, user2Number] = [
+	instanceBigInt.calculate(['read', 'update']),
+	instanceNumber.calculate(['read', 'update']),
+];
+
+const [user3BigInt, user3Number] = [
+	instanceBigInt.calculate(['update', 'delete']),
+	instanceNumber.calculate(['update', 'delete']),
+];
 
 test('Calculations', () => {
-	assert.is(user1, 3n);
-	assert.is(user2, 6n);
-	assert.is(user3, 12n);
+	assert.is(user1BigInt, 3n);
+	assert.is(user1Number, 3);
+
+	assert.is(user2BigInt, 6n);
+	assert.is(user2Number, 6);
+
+	assert.is(user3BigInt, 12n);
+	assert.is(user3Number, 12);
 });
 
 test('Additions', () => {
-	const added = instance.add(user1, ['delete']);
-	const actual = instance.calculate(['create', 'read', 'delete']);
+	const added = instanceBigInt.add(user1BigInt, ['delete']);
+	const actual = instanceBigInt.calculate(['create', 'read', 'delete']);
+
 	assert.is(added, actual);
+
+	const added2 = instanceNumber.add(user1Number, ['delete']);
+	const actual2 = instanceNumber.calculate(['create', 'read', 'delete']);
+
+	assert.is(added2, actual2);
 });
 
 test('Subtractions', () => {
-	const subtracted = instance.subtract(user1, ['read']);
-	const actual = instance.calculate(['create']);
+	const subtracted = instanceBigInt.subtract(user1BigInt, ['read']);
+	const actual = instanceBigInt.calculate(['create']);
+
 	assert.is(subtracted, actual);
+
+	const subtracted2 = instanceNumber.subtract(user1Number, ['read']);
+	const actual2 = instanceNumber.calculate(['create']);
+
+	assert.is(subtracted2, actual2);
 });
 
 test('Keys are correct', () => {
-	const keys = instance.keys();
+	const keys = instanceBigInt.keys();
+
 	assert.is(keys.length, 4);
 	assert.equal(keys, ['create', 'read', 'update', 'delete']);
+
+	const keys2 = instanceNumber.keys();
+
+	assert.is(keys2.length, 4);
+	assert.equal(keys2, ['create', 'read', 'update', 'delete']);
 });
 
 test('Tests', () => {
-	const user1CanRead = instance.test(user1, 'read');
-	const user1CanDelete = instance.test(user1, 'delete');
+	const user1CanRead = instanceBigInt.test(user1BigInt, 'read');
+	const user1CanDelete = instanceBigInt.test(user1BigInt, 'delete');
 
 	assert.is(user1CanRead, true);
 	assert.is(user1CanDelete, false);
+
+	const user1CanRead2 = instanceNumber.test(user1Number, 'read');
+	const user1CanDelete2 = instanceNumber.test(user1Number, 'delete');
+
+	assert.is(user1CanRead2, true);
+	assert.is(user1CanDelete2, false);
 });
 
 test.run();

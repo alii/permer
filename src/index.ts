@@ -1,29 +1,29 @@
-/**
- * The main class to instantiate Permer.
- */
-export class Permer<T extends string> {
-	private readonly map: Record<T, bigint>;
+export class Permer<T extends string, UseBigInts extends boolean = false> {
+	private readonly map: Record<T, UseBigInts extends true ? bigint : number>;
+	private readonly useBigints: UseBigInts;
 
 	/**
 	 * Constructs a new instance of Permer
 	 * @param flags - An array of available flags
 	 */
-	constructor(flags: T[]) {
+	constructor(flags: T[], useBigints: UseBigInts = false as UseBigInts) {
+		this.useBigints = useBigints;
+
 		this.map = flags.reduce((all, key, index) => {
-			const representation = 2n ** BigInt(index);
+			const representation = useBigints ? 2n ** BigInt(index) : 2 ** index;
 
 			return {
 				...all,
 				[key]: representation,
 			};
-		}, {} as Record<T, bigint>);
+		}, {} as Record<T, UseBigInts extends true ? bigint : number>);
 	}
 
 	/**
 	 * Gets the binary representation of a given flag
 	 * @param flag
 	 */
-	get(flag: T): bigint {
+	get(flag: T): UseBigInts extends true ? bigint : number {
 		return this.map[flag];
 	}
 
@@ -53,8 +53,17 @@ export class Permer<T extends string> {
 	 *   throw new Error("You do not have permission to create a blog post.);
 	 * }
 	 */
-	test(value: bigint, flag: T | bigint): boolean {
-		return !!(value & (typeof flag === 'bigint' ? flag : this.get(flag)));
+	test(
+		value: UseBigInts extends true ? bigint : number,
+		flag: T | (UseBigInts extends true ? bigint : number),
+	): boolean {
+		if (this.useBigints) {
+			return !!(
+				value & (typeof flag === 'bigint' ? flag : this.get(flag as T))
+			);
+		}
+
+		return !!(value & (typeof flag === 'number' ? flag : this.get(flag as T)));
 	}
 
 	/**
@@ -66,8 +75,15 @@ export class Permer<T extends string> {
 	 *   permissions: permerInstance.calculate(["create_blog_post", "delete_blog_post"]);
 	 * })
 	 */
-	calculate(flags: T[]): bigint {
-		return flags.reduce((all, flag) => this.get(flag) | all, 0n);
+	calculate(flags: T[]): UseBigInts extends true ? bigint : number {
+		const result = flags.reduce(
+			// `as number` below is a bit of a hack because the values will be either bigints or numbers
+			// at runtime, but the type system doesn't know that.
+			(all, flag) => (this.get(flag) as number) | (all as number),
+			this.useBigints ? 0n : 0,
+		);
+
+		return result as UseBigInts extends true ? bigint : number;
 	}
 
 	/**
@@ -75,7 +91,10 @@ export class Permer<T extends string> {
 	 * @param current - The current integer
 	 * @param newValues - The new values to add
 	 */
-	add(current: bigint, newValues: T[]): bigint {
+	add(
+		current: UseBigInts extends true ? bigint : number,
+		newValues: T[],
+	): UseBigInts extends true ? bigint : number {
 		const oldList = this.list(current);
 		return this.calculate([...oldList, ...newValues]);
 	}
@@ -85,7 +104,10 @@ export class Permer<T extends string> {
 	 * @param current - The current integer
 	 * @param removeValues - The values to remove
 	 */
-	subtract(current: bigint, removeValues: T[]): bigint {
+	subtract(
+		current: UseBigInts extends true ? bigint : number,
+		removeValues: T[],
+	): UseBigInts extends true ? bigint : number {
 		const oldList = this.list(current);
 		return this.calculate(oldList.filter(it => !removeValues.includes(it)));
 	}
@@ -94,7 +116,7 @@ export class Permer<T extends string> {
 	 * Converts an integer back into a list of flags.
 	 * @param value
 	 */
-	list(value: bigint): T[] {
+	list(value: UseBigInts extends true ? bigint : number): T[] {
 		return this.keys().filter(key => this.test(value, key));
 	}
 }
